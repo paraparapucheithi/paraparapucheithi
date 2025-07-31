@@ -1,6 +1,6 @@
 {%load static%}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ta">
 
 <head>
   <meta charset="UTF-8" />
@@ -9,71 +9,60 @@
   <link rel="stylesheet" href="{% static 'styles/style.css' %}">
   <script defer src="{% static 'js/app.js' %}"></script>
   <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+  
+  <!-- SEO Meta Tags for Tamil Magazine Page -->
+  <title>Tamil Magazine Online | Tamil Seithigal Magazine - Paraparapu Chethi</title>
+  <meta name="description" content="Read the best Tamil magazine articles from Paraparapu Chethi. Explore weekly Tamil Seithigal, editorials, culture stories, and trending topics in Tamil." />
+  <meta name="keywords" content="Tamil Magazine Online, Tamil Weekly Magazine, Tamil Seithigal, Tamil Editorial, Tamil Articles, Paraparapu Chethi Magazine, Tamil News 2025" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Paraparapu Chethi" />
+  <meta property="og:title" content="Tamil Magazine Online | Paraparapu Chethi" />
+  <meta property="og:description" content="Explore trending Tamil magazines, Seithigal articles, and weekly editorials from Tamil Nadu." />
+  <meta property="og:image" content="{% static 'images/new_logo.png' %}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.paraparappucheithi.com/magazine" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R8VF2L6J0S"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-R8VF2L6J0S');
+  </script>
+
+  <!-- Poptin Pixel -->
   <script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=6962185e8c1c0' async='true'></script>
-  <title>Paraparapu Chethi</title>
 </head>
 
-<body>
-  <header class="header">
-    <div class="container">
-      <div class="header__inner">
-        <a href="{% url 'news'%}" class="header__logo" aria-label="home-link">
-          <img src="{%static 'images/lo.png'%}" alt="" />
-        </a>
-        <nav class="header__nav" role="main-navigation">
-          <ul class="header__list">
-            <li class="header__item">
-              <a href="{% url 'news'%}" class="header__link">Home</a>
-            </li>
-            <li class="header__item">
-              <a href="{% url 'new-news'%}" class="header__link">New</a>
-            </li>
-            <li class="header__item">
-              <a href="{% url 'magazine_page'%}" class="header__link">Magazines</a>
-            </li>
-            
-            <li class="header__item header__dropdown">
-              <a href="#" class="header__link">Categories</a>
-              <ul class="dropdown-menu">
-                {% for tag in tags %}
-                  <li><a class="dropdown-item" href="{% url 'news-by-tag' tag.name %}">{{ tag.name }}</a></li>
-                {% endfor %}
-              </ul>
-            </li>
-          </ul>
-        </nav>
-        <button id="menu-btn" class="hamburger">
-          <span class="hamburger-top"></span>
-          <span class="hamburger-middle"></span>
-          <span class="hamburger-bottom"></span>
-        </button>
-      </div>
-    </div>
-  </header>
 
-  <nav class="mobile-nav" id="mobile-nav">
-    <ul class="mobile-nav__list">
-      <li class="mobile-nav__item">
-        <a href="{% url 'news' %}" class="mobile-nav__link">Home</a>
-      </li>
-      <li class="mobile-nav__item">
-        <a href="{% url 'new-news' %}" class="mobile-nav__link">New</a>
-      </li>
-      <li class="mobile-nav__item">
-        <a href="{% url 'magazine_page' %}" class="mobile-nav__link">Magazines</a>
-      </li>
-      <li class="mobile-nav__item header__item header__dropdown mobile-nav__link">
-          <a href="#" class="header__link mobile-nav__link">Categories</a>
-            <ul class="dropdown-menu">
-              {% for tag in tags %}
-                <li><a class="dropdown-item" href="{% url 'news-by-tag' tag.name %}">{{ tag.name }}</a></li>
-              {% endfor %}
-            </ul>
-          
-      </li>
+<body>
+
+<header class="responsive-header">
+    <div class="mobile-header">
+      <button class="hamburger" onclick="toggleMenu()">☰</button>
+      <a href="{% url 'home' %}">
+        <img src="{% static 'images/new_logo.png' %}" class="main-logo" alt="Paraparapu Chethi Logo">
+      </a>
+    </div>
+
+  <nav class="nav-links" id="navMenu">
+    <ul>
+      <li><a href="#">நியூஸ்</a></li>
+      <li><a href="{% url 'new-news' %}">சமீபத்திய!</a></li>
+      {% for tag in tags %}
+        <li><a href="{% url 'news-by-tag' tag.name %}">{{ tag.name }}</a></li>
+      {% endfor %}
     </ul>
   </nav>
+</header>
   <main>
+    <h1 style="font-size: 36px; font-weight: bold; text-align: center; margin-top: 30px; font-family: Arial, sans-serif;">
+    Tamil Magazine Online | Weekly Tamil Seithigal | Paraparapu Chethi Magazine
+    </h1>
+
+  
+
     <section class="news">
       <div class="container">
         <div class="news__inner">
@@ -97,19 +86,20 @@
         </div>
       </div>
     </section>
-    <h1 class="container" style="margin-top: 50px; margin-bottom: 20px; font-size: 40px; font-weight: bold; text-align: center; text-transform: uppercase; letter-spacing: 2px; font-family: Arial, sans-serif;">
+    <h2 class="container" style="margin-top: 50px; margin-bottom: 20px; font-size: 40px; font-weight: bold; text-align: center; text-transform: uppercase; letter-spacing: 2px; font-family: Arial, sans-serif;">
   Magazines ! 
-</h1><section class="recent">
+</h2><section class="recent">
       <div class="container"> <!-- Add this heading -->
         <div class="recent__inner">
           <ul class="recent__list">
             {% for item in magazines %}
             <li class="recent__item">
+              <a href="{% url  'single-mag' item.title %}">
               <article class="recent__articlemag">
                 {% if item.thumbnail %}
-                  <img class="recent__article-covermag" src="{{ item.thumbnail.url }}" alt="">
+                  <img class="recent__article-covermag" src="{{ item.thumbnail.url }}" alt="{{item.title}}">
                 {% else %}
-                  <img class="recent__article-cover" src="{% static 'images/d.jpg' %}" alt="No Image">
+                  <img class="recent__article-cover" src="{% static 'images/d.jpg' %}" alt="{{item.title}}">
                 {% endif %}
                 <div class="recent__article-info">
                   <h4 class="recent__article-title">
@@ -117,11 +107,12 @@
                   </h4>
                   
                   <p class="recent__article-subtitle">
-                    {{ item.description|linebreaksbr|truncatewords:19|safe }}
+                    {{ item.description|safe|linebreaksbr|truncatewords:19|safe }}
                   </p>  
                 <a href="{% url 'single-mag' item.title %}" class="read-more-link">Read more →</a>
                 </div>
               </article>
+              </a>
             </li>
             {% endfor %}
           </ul>

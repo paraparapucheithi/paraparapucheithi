@@ -17,19 +17,28 @@
   <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <title>Paraparapu Chethi</title>
+    <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R8VF2L6J0S"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-R8VF2L6J0S');
+  </script>
 </head>
 
 <body>
   <header class="header">
     <div class="container">
       <div class="header__inner">
-        <a href="{% url 'news'%}" class="header__logo" aria-label="home-link">
+        <a href="{% url 'home'%}" class="header__logo" aria-label="home-link">
           <img src="{%static 'images/lo.png'%}" alt="" />
         </a>
         <nav class="header__nav" role="main-navigation">
           <ul class="header__list">
             <li class="header__item">
-              <a href="{% url 'news'%}" class="header__link">Home</a>
+              <a href="{% url 'home'%}" class="header__link">Home</a>
             </li>
             <li class="header__item">
               <a href="#" class="header__link">New</a>
@@ -58,28 +67,6 @@
     </div>
   </header>
 
-  <nav class="mobile-nav" id="mobile-nav">
-    <ul class="mobile-nav__list">
-      <li class="mobile-nav__item">
-        <a href="{% url 'news' %}" class="mobile-nav__link">Home</a>
-      </li>
-      <li class="mobile-nav__item">
-        <a href="{% url 'new-news' %}" class="mobile-nav__link">New</a>
-      </li>
-      <li class="mobile-nav__item">
-        <a href="{% url 'magazine_page' %}" class="mobile-nav__link">Magazines</a>
-      </li>
-      <li class="mobile-nav__item header__item header__dropdown mobile-nav__link">
-          <a href="#" class="header__link mobile-nav__link">Categories</a>
-            <ul class="dropdown-menu">
-              {% for tag in tags %}
-                <li><a class="dropdown-item" href="{% url 'news-by-tag' tag.name %}">{{ tag.name }}</a></li>
-              {% endfor %}
-            </ul>
-          
-      </li>
-    </ul>
-  </nav>
   <main>
 
     <!-- HTML Structure -->

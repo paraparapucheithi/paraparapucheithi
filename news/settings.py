@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'seithi',
     'ckeditor',
     'ckeditor_uploader',
+    'django.contrib.sitemaps',
+
 ]
 
 MIDDLEWARE = [
@@ -124,7 +126,18 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/images/'
-CKEDITOR_UPLOAD_PATH = ''  
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = 'pillow'  
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Full',
+        'height': 300,
+        'width': '100%',
+        'extraPlugins': ','.join([
+            'uploadimage',
+        ]),
+    }
+}
 
 
 

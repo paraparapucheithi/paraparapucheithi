@@ -1,83 +1,93 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ta">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="{% static 'styles/style.css' %}">
   <script defer src="{% static 'js/app.js' %}"></script>
   <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
-  <title>Paraparapu Chethi | New News</title>
+
+  <title>Latest Tamil News | Paraparappu Cheithi - Today Tamil Seithigal</title>
+
+  <!-- ✅ SEO Meta Tags -->
+
+  <meta name="description" content="சமீபத்திய தமிழ் செய்திகள் | Tamil Latest News Today Live | இன்றைய முக்கிய செய்திகள், தலைப்புச் செய்திகள் மற்றும் நம்பகமான செய்திகளை உடனுக்குடன் பெறுங்கள் Paraparapu Chethi இல்.">
+
+  <meta name="keywords" content="Tamil News, Tamil Seithigal, Tamil Breaking News, Latest Tamil News, Tamil Nadu News, Tamil Newspaper, Tamil News Today, Tamil Hot News, Tamil Viral News">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Paraparapu Chethi">
+
+  <!-- ✅ Open Graph Tags -->
+  <meta property="og:title" content="Latest Tamil News | பரபரப்பு செய்தி">
+  <meta property="og:description" content="இங்கே பரபரப்பு செய்தியில் சமீபத்திய, பரபரப்பான மற்றும் நம்பகமான தமிழ்ச்செய்திகளை உடனுக்குடன் அறியலாம்.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.paraparappucheithi.com/tamil-news/">
+  <meta property="og:image" content="{{ request.build_absolute_uri }}{% static 'images/new_logo.png' %}">
+
+
+  <!-- ✅ Google Tag -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R8VF2L6J0S"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-R8VF2L6J0S');
+  </script>
+  <script type="application/ld+json">
+      {
+      "@context": "https://schema.org",
+      "@type": "NewsMediaOrganization",
+      "name": "Paraparapu Chethi",
+      "url": "https://www.paraparappucheithi.com",
+      "logo": "https://www.paraparappucheithi.com{% static 'images/new_logo.png' %}"
+    }
+    </script>
+
+  <!-- ✅ Poptin Script -->
   <script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=6962185e8c1c0' async='true'></script>
 </head>
 
 <body>
-  <header class="header">
-    <div class="container">
-      <div class="header__inner">
-        <a href="{% url 'news' %}" class="header__logo">
-          <img src="{% static 'images/lo.png' %}" alt="Logo" />
-        </a>
-        <nav class="header__nav">
-          <ul class="header__list">
-            <li class="header__item"><a href="{% url 'news' %}" class="header__link">Home</a></li>
-            <li class="header__item"><a href="{% url 'new-news' %}" class="header__link">New</a></li>
-            <li class="header__item header__dropdown">
-              <a href="#" class="header__link">Categories</a>
-              <ul class="dropdown-menu">
-                {% for tag in tags %}
-                <li><a href="{% url 'news-by-tag' tag.name %}" class="dropdown-item">{{ tag.name }}</a></li>
-                {% endfor %}
-              </ul>
-            </li>
-          </ul>
-        </nav>
-        <button id="menu-btn" class="hamburger">
-          <span class="hamburger-top"></span>
-          <span class="hamburger-middle"></span>
-          <span class="hamburger-bottom"></span>
-        </button>
-      </div>
+  <header class="responsive-header">
+    <div class="mobile-header">
+      <button class="hamburger" onclick="toggleMenu()">☰</button>
+      <a href="{% url 'home' %}">
+        <img src="{% static 'images/new_logo.png' %}" class="main-logo" alt="Paraparapu Chethi Logo">
+      </a>
     </div>
+
+
+    <nav class="nav-links" id="navMenu">
+      <ul>
+        <li><a href="{% url 'home'%}">நியூஸ்</a></li>
+        <li><a href="{% url 'new-news' %}">சமீபத்திய!</a></li>
+        {% for tag in tags %}
+          <li><a href="{% url 'news-by-tag' tag.name %}">{{ tag.name }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
   </header>
   
-  <nav class="mobile-nav" id="mobile-nav">
-    <ul class="mobile-nav__list">
-      <li class="mobile-nav__item">
-        <a href="{% url 'news' %}" class="mobile-nav__link">Home</a>
-      </li>
-      <li class="mobile-nav__item">
-        <a href="{% url 'new-news' %}" class="mobile-nav__link">New</a>
-      </li>
-      <li class="mobile-nav__item">
-        <a href="{% url 'magazine_page' %}" class="mobile-nav__link">Magazines</a>
-      </li>
-      <li class="mobile-nav__item header__item header__dropdown mobile-nav__link">
-          <a href="#" class="header__link mobile-nav__link">Categories</a>
-            <ul class="dropdown-menu">
-              {% for tag in tags %}
-                <li><a class="dropdown-item" href="{% url 'news-by-tag' tag.name %}">{{ tag.name }}</a></li>
-              {% endfor %}
-            </ul>
-          
-      </li>
-    </ul>
-  </nav>
   <main class="container" style="padding: 40px 20px;">
-    <h1 style="font-size: 3.5rem; margin-bottom: 30px; font-weight: bold; text-align: center;">Latest News</h1>
+    <h1 style="font-size: 3.5rem; margin-bottom: 30px; font-weight: bold; text-align: center;">
+      Latest Tamil News | இன்று வெளியான தமிழ் செய்திகள்
+    </h1>
 
-    <section class="news-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+    <section class="news-gridt">
       {% for item in news %}
       <article class="news-card" style="background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
         {% if item.thumbnail %}
-        <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}" style="width: 100%; height: 200px; object-fit: cover;">
+        <img loading="lazy" src="{{ item.thumbnail.url }}" alt="{{ item.title }}" style="width: 100%; height: 200px; object-fit: cover;">
         {% else %}
-        <img src="{% static 'images/d.jpg' %}" alt="No Image" style="width: 100%; height: 200px; object-fit: cover;">
+        <img loading="lazy" src="{% static 'images/d.jpg' %}" alt="{{item.title}}" style="width: 100%; height: 200px; object-fit: cover;">
         {% endif %}
+
         <div style="padding: 20px;">
           <h2 style="font-size: 1.25rem; margin-bottom: 10px;">
-            <a href="{% url 'single-news' item.id %}" style="color: #222; text-decoration: none;">{{ item.title|truncatewords:12 }}</a>
+            <a href="{% url 'single-news' item.slug %}" style="color: #222; text-decoration: none;">
+              {{ item.title|truncatewords:12 }}
+            </a>
           </h2>
           <p style="font-size: 0.95rem; color: #555;">{{ item.description|truncatewords:20 }}</p>
           <p style="font-size: 0.85rem; margin-top: 10px; color: #888;">{{ item.published_date|date:"F j, Y" }}</p>
@@ -85,7 +95,18 @@
       </article>
       {% endfor %}
     </section>
+
+    <section class="home-keywords container" style="padding: 40px 0; background: #f9f9f9; border-bottom: 1px solid #e2e2e2;">
+  <div style="max-width: 900px; margin: 0 auto; padding: 0 20px;">
+    <h2 style="font-size: 1.8rem; font-weight: 700; color: #222; margin-bottom: 16px; text-align:center;">
+      Tamil News Today in Tamil | Tamil Seithigal | Tamil News Channel
+    </h2>
+    <p style="text-align:center; font-size: 15px; color: #555;">
+      Get the latest Tamil Seithigal from Paraparapu Chethi. Stay informed with trending news stories, breaking updates, and top headlines in Tamil — delivered fresh every day.
+    </p>
+  </div>
+</section>
+
   </main>
 </body>
-
 </html>

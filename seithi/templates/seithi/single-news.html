@@ -1,84 +1,76 @@
 {%load static%}
 
-
-
-{%load static%}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ta">
 
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="{% static 'styles/style.css' %}">
-   <script defer src="{% static 'js/app.js' %}"></script>
+  <title>{{ new.title }} | Tamil News Today in Tamil | Tamil Seithigal - Paraparapu Chethi</title>
+  <meta name="description" content="{{ new.title }} - Read detailed Tamil Seithigal covering the latest updates, breaking headlines, and trending Tamil news from Paraparapu Chethi.">
+  <link rel="canonical" href="{{ request.build_absolute_uri }}">
+  <meta property="og:title" content="{{ new.title }} | Tamil News Today | Paraparapu Chethi">
   <script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=6962185e8c1c0' async='true'></script>
   <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <title>Paraparapu Chethi</title>
+  <meta property="og:description" content="Read the latest Tamil Seithigal - {{ new.title }} with full details, updated facts and related stories.">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+  <script defer src="{% static 'js/app.js' %}"></script>
+    <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R8VF2L6J0S"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-R8VF2L6J0S');
+  </script>
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "headline": "{{ new.title }}",
+      "datePublished": "{{ new.published_date|date:'c' }}",
+      "author": {
+        "@type": "Organization",
+        "name": "Paraparapu Chethi"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Paraparapu Chethi",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "{% static 'images/new_logo.png' %}"
+        }
+      },
+      "description": "{{ new.description|truncatewords:20 }}"
+    }
+  </script>
 </head>
 
+
 <body>
-  <header class="header">
-    <div class="container">
-      <div class="header__inner">
-        <a href="{% url 'news'%}" class="header__logo" aria-label="home-link">
-          <img src="{%static 'images/lo.png'%}" alt="" />
-        </a>
-        <nav class="header__nav" role="main-navigation">
-          <ul class="header__list">
-            <li class="header__item">
-              <a href="{% url 'news'%}" class="header__link">Home</a>
-            </li>
-            <li class="header__item">
-              <a href="#" class="header__link">New</a>
-            </li>
-            
-            <li class="header__item">
-              <a href="{% url 'magazine_page'%}" class="header__link">Magazines</a>
-            </li>
-            <li class="header__item header__dropdown">
-              <a href="#" class="header__link">Categories</a>
-              <ul class="dropdown-menu">
-                {% for tag in tags %}
-                  <li><a class="dropdown-item" href="{% url 'news-by-tag' tag.name %}">{{ tag.name }}</a></li>
-                {% endfor %}
-              </ul>
-            </li>
-
-          </ul>
-        </nav>
-        <button id="menu-btn" class="hamburger">
-          <span class="hamburger-top"></span>
-          <span class="hamburger-middle"></span>
-          <span class="hamburger-bottom"></span>
-        </button>
-      </div>
+<header class="responsive-header">
+    <div class="mobile-header">
+      <button class="hamburger" onclick="toggleMenu()">☰</button>
+      <a href="{% url 'home' %}">
+        <img src="{% static 'images/new_logo.png' %}" class="main-logo" alt="Paraparapu Chethi Logo">
+      </a>
     </div>
-  </header>
 
-  <nav class="mobile-nav" id="mobile-nav">
-    <ul class="mobile-nav__list">
-      <li class="mobile-nav__item">
-        <a href="{% url 'news' %}" class="mobile-nav__link">Home</a>
-      </li>
-      <li class="mobile-nav__item">
-        <a href="{% url 'new-news' %}" class="mobile-nav__link">New</a>
-      </li>
-      <li class="mobile-nav__item">
-        <a href="{% url 'magazine_page' %}" class="mobile-nav__link">Magazines</a>
-      </li>
-      <li class="mobile-nav__item header__item header__dropdown mobile-nav__link">
-          <a href="#" class="header__link mobile-nav__link">Categories</a>
-            <ul class="dropdown-menu">
-              {% for tag in tags %}
-                <li><a class="dropdown-item" href="{% url 'news-by-tag' tag.name %}">{{ tag.name }}</a></li>
-              {% endfor %}
-            </ul>
-          
-      </li>
+  <nav class="nav-links" id="navMenu">
+    <ul>
+      <li><a href="#">நியூஸ்</a></li>
+      <li><a href="{% url 'new-news' %}">சமீபத்திய!</a></li>
+      {% for tag in tagsa %}
+        <li><a href="{% url 'news-by-tag' tag.name %}">{{ tag.name }}</a></li>
+      {% endfor %}
     </ul>
   </nav>
+</header>
 
   <main>
 
@@ -157,7 +149,7 @@
             {% for item in latest_news %}
               <li class="singlenews__side-item">
                 <h3 class="singlenews__side-item-title">
-                  <a href="{% url 'single-news' item.id %}">
+                  <a href="{% url 'single-news' item.slug %}">
                     {{ item.title|truncatewords:6 }}
                   </a>
                 </h3>
@@ -177,9 +169,22 @@
   </div>
 </section>
 
-    <h1 class="container" style="margin-top: 50px; margin-bottom: 20px; font-size: 40px; font-weight: bold; text-align: center; text-transform: uppercase; letter-spacing: 2px; font-family: Arial, sans-serif;">
-  Related News!!
-</h1><section class="recent">
+<section class="home-keywords container" style="padding: 40px 0; background: #f9f9f9; border-bottom: 1px solid #e2e2e2;">
+  <div style="max-width: 900px; margin: 0 auto; padding: 0 20px;">
+    <h2 style="font-size: 1.8rem; font-weight: 700; color: #222; margin-bottom: 16px; text-align:center;">
+      Tamil News Today in Tamil | Tamil Seithigal | Tamil News Channel
+    </h2>
+    <p style="text-align:center; font-size: 15px; color: #555;">
+      Get the latest Tamil Seithigal from Paraparapu Chethi. Stay informed with trending news stories, breaking updates, and top headlines in Tamil — delivered fresh every day.
+    </p>
+  </div>
+</section>
+
+
+<h2 class="container" style="margin-top: 50px; margin-bottom: 20px; font-size: 40px; font-weight: bold; text-align: center; text-transform: uppercase; letter-spacing: 2px; font-family: Arial, sans-serif;">
+  தொடர்புடைய செய்திகள்!!
+</h2>
+<section class="recent">
       <div class="container"> <!-- Add this heading -->
         <div class="recent__inner">
           <ul class="recent__list">
@@ -187,16 +192,16 @@
             <li class="recent__item">
               <article class="recent__article">
                 {% if item.thumbnail %}
-                  <img class="recent__article-cover" src="{{ item.thumbnail.url }}" alt="">
+                  <img class="recent__article-cover" src="{{ item.thumbnail.url }}" alt="{{item.title}}">
                 {% else %}
                   <img class="recent__article-cover" src="{% static 'images/d.jpg' %}" alt="No Image">
                 {% endif %}
                 <div class="recent__article-info">
                   <span class="recent__article-number">{{ forloop.counter }}</span>
                   <h4 class="recent__article-title">
-                    <a href="{% url 'single-news' item.id %}">{{ item.title|truncatewords:6 }}</a>
+                    <a href="{% url 'single-news' item.slug %}">{{ item.title|truncatewords:6 }}</a>
                   </h4>
-                  <a href="{% url 'single-news' item.id %}" class="read-more-link">Read more →</a>
+                  <a href="{% url 'single-news' item.slug %}" class="read-more-link">Read more →</a>
                 </div>
               </article>
             </li>

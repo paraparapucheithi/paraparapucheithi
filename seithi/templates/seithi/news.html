@@ -1,150 +1,305 @@
 {%load static%}
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ta">
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ✅ Meta Title -->
+  <title>Tamil News Today in Tamil | Tamil Seithigal | Top Tamil News Channel</title>
+
+  <!-- ✅ Meta Description -->
+  <meta name="description" content="Get the latest Tamil news today in Tamil. Watch our Tamil news channel and read instant Tamil Seithigal updates on politics, cinema, and local stories.">
+
+  <!-- ✅ Meta Keywords -->
+  <meta name="keywords" content="Tamil news today in tamil, Tamil news channel, Tamil seithigal, Tamil breaking news, Tamil politics news">
+
+  <!-- ✅ Open Graph (Only Once) -->
+  <meta property="og:title" content="Tamil News Today in Tamil - Tamil Seithigal & News Channel" />
+  <meta property="og:description" content="Get the latest Tamil Seithigal. தமிழில் இன்று தமிழ் செய்திகள் உடனுக்குடன்!" />
+  <meta property="og:image" content="https://tamil.paraparappucheithi.com/static/images/og-logo.png" />
+  <meta property="og:url" content="https://tamil.paraparappucheithi.com" />
+  <meta property="og:type" content="website" />
+
+  <!-- ✅ Twitter Meta -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Tamil News Today | Tamil Seithigal | Tamil News Channel" />
+  <meta name="twitter:description" content="Your source for Tamil news today in Tamil. Stay updated with real-time Tamil Seithigal and our live Tamil news channel." />
+  <meta name="twitter:image" content="https://tamil.paraparappucheithi.com/static/images/og-logo.png" />
+
+  <!-- ✅ Favicon & Styles -->
+  <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
   <link rel="stylesheet" href="{% static 'styles/style.css' %}">
   <script defer src="{% static 'js/app.js' %}"></script>
-  <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
   <script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=6962185e8c1c0' async='true'></script>
-  <title>Paraparapu Chethi</title>
+
+  <!-- ✅ Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R8VF2L6J0S"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-R8VF2L6J0S');
+  </script>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": "{{ item.title|escapejs }}",
+  "image": ["{{ item.thumbnail.url }}"],
+  "datePublished": "{{ item.published_date|date:'c' }}",
+  "dateModified": "{{ item.updated_at|date:'c' }}",
+  "author": {
+    "@type": "Organization",
+    "name": "Paraparapu Chethi"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Paraparapu Chethi",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{% static 'images/new_logo.png' %}"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ request.build_absolute_uri }}"
+  }
+}
+</script>
+
 </head>
 
+
 <body>
-  <header class="header">
-    <div class="container">
-      <div class="header__inner">
-        <a href="{% url 'news'%}" class="header__logo" aria-label="home-link">
-          <img src="{%static 'images/lo.png'%}" alt="" />
-        </a>
-        <nav class="header__nav" role="main-navigation">
-          <ul class="header__list">
-            <li class="header__item">
-              <a href="{% url 'news'%}" class="header__link">Home</a>
-            </li>
-            <li class="header__item">
-              <a href="{% url 'new-news'%}" class="header__link">New</a>
-            </li>
-            
-            <li class="header__item">
-              <a href="{% url 'magazine_page'%}" class="header__link">Magazines</a>
-            </li>
-            <li class="header__item header__dropdown">
-              <a href="#" class="header__link">Categories</a>
-              <ul class="dropdown-menu">
-                {% for tag in tags %}
-                  <li><a class="dropdown-item" href="{% url 'news-by-tag' tag.name %}">{{ tag.name }}</a></li>
-                {% endfor %}
-              </ul>
-            </li>
-          </ul>
-        </nav>
-        <button id="menu-btn" class="hamburger">
-          <span class="hamburger-top"></span>
-          <span class="hamburger-middle"></span>
-          <span class="hamburger-bottom"></span>
-        </button>
-      </div>
+
+
+<!-- Header Main -->
+<header class="responsive-header">
+    <div class="mobile-header">
+      <button class="hamburger" onclick="toggleMenu()">☰</button>
+      <a href="{% url 'home' %}">
+        <img src="{% static 'images/new_logo.png' %}" class="main-logo" alt="Paraparapu Chethi Logo">
+      </a>
     </div>
-  </header>
-  <nav class="mobile-nav" id="mobile-nav">
-    <ul class="mobile-nav__list">
-      <li class="mobile-nav__item">
-        <a href="{% url 'news' %}" class="mobile-nav__link">Home</a>
-      </li>
-      <li class="mobile-nav__item">
-        <a href="{% url 'new-news' %}" class="mobile-nav__link">New</a>
-      </li>
-      <li class="mobile-nav__item">
-        <a href="{% url 'magazine_page' %}" class="mobile-nav__link">Magazines</a>
-      </li>
-      <li class="mobile-nav__item header__item header__dropdown mobile-nav__link">
-          <a href="#" class="header__link mobile-nav__link">Categories</a>
-            <ul class="dropdown-menu">
-              {% for tag in tags %}
-                <li><a class="dropdown-item" href="{% url 'news-by-tag' tag.name %}">{{ tag.name }}</a></li>
-              {% endfor %}
-            </ul>
-          
-      </li>
+
+  <nav class="nav-links" id="navMenu">
+    <ul>
+      <li><a href="#">நியூஸ்</a></li>
+      <li><a href="{% url 'new-news' %}">சமீபத்திய!</a></li>
+      {% for tag in tags %}
+        <li><a href="{% url 'news-by-tag' tag.name %}">{{ tag.name }}</a></li>
+      {% endfor %}
     </ul>
   </nav>
+</header>
 
+
+
+
+
+<!-- Top Bar -->
+<section class="home-keywords container" style="padding: 40px 0; background: #f9f9f9; border-bottom: 1px solid #e2e2e2;">
+  <div style="max-width: 900px; margin: 0 auto; padding: 0 20px;">
+    <h1 style="font-size: 2rem; font-weight: 700; color: #222; margin-bottom: 16px; text-align:center;">
+      Tamil News Today in Tamil | Tamil Seithigal | Tamil News Channel
+    </h1>
+  </div>
+</section>
   <main>
-    <section class="news">
-      <div class="container">
-        <div class="news__inner">
-          <article class="news__main">
-            <img src="{%static 'images/b.png'%}" alt="Web3 future"
-              class="news__main-cover news__main-cover--desktop" />
-            <img src="{%static 'images/b.png'%}" alt="Web3 future"
-              class="news__main-cover news__main-cover--mobile" />
-            <div class="news__main-content">
-              <h1 class="news__main-title">
-                The Bright Future of Web 3.0?</h1>
-              <div class="news__main-info">
-                <p class="news__main-subtitle">
-                  We dive into the next evolution of the web that claims to put
-                  the power of the platforms back into the hands of the people.
-                  But is it really fulfilling its promise?
-                </p>
-                <a href="{% url 'magazine_page' %}" class="read-more">Read more </a>
-              </div>
-            </div>
-          </article>
-          <aside class="news__side">
-            <h2 class="news__side-title">New</h2>
-            <ul class="news__side-list">
-            {% for item in news|slice:":3" %}
-              <li class="news__side-item">
-                <h3 class="news__side-item__title">
-                  <a href="{% url 'single-news' item.id %}">
-                    {{ item.title|truncatewords:6 }}
-                  </a>
-                </h3>
-                <p class="news__side-item__description">
-                  {{ item.description|truncatewords:10 }}
-                </p>
-              </li>
-            {% endfor %}
+  <section class="breaking-news container">
+    
+  <div class="breaking-grid">
+    <!-- LEFT COLUMN (Main Breaking News) -->
+<div class="breaking-left">
+  {% with item=bnews.0 %}
+    <a href="{% url 'single-news' item.slug %}">
+      <span class="breaking-tag">முக்கிய செய்திகள்</span>
+    </a>
 
-            </ul>
-          </aside>
+    <h2 class="breaking-title">
+      <a href="{% url 'single-news' item.slug %}">
+        {{ item.title }}
+      </a>
+    </h2>
+
+    {% for tag in item.tags.all %}
+      <a href="{% url 'single-news' item.slug %}">
+        <span class="singlenews__categorytag" style="display: inline-block; margin-right: 5px;">
+          {{ tag.name }}
+        </span>
+      </a>
+    {% empty %}
+      <a href="{% url 'single-news' item.slug %}">
+        <span class="singlenews__categorytag" style="color: gray;">No tags</span>
+      </a>
+    {% endfor %}
+
+    <a href="{% url 'single-news' item.slug %}">
+      <p class="breaking-meta">| {{ item.published_date|timesince }} ago</p>
+    </a>
+
+    <a href="{% url 'single-news' item.slug %}">
+      {% if item.thumbnail %}
+        <img class="breaking-img" src="{{ item.thumbnail.url }}" alt="{{item.title}}">
+      {% else %}
+        <img class="breaking-img" src="{% static 'images/d.jpg' %}" alt="no-image">
+      {% endif %}
+    </a>
+
+    <a href="{% url 'single-news' item.slug %}">
+      <p class="breaking-summary">{{ item.description|truncatewords:30 }}</p>
+    </a>
+  {% endwith %}
+</div>
+
+  
+    
+
+    <!-- RIGHT COLUMN (Mini Headlines) -->
+<div class="breaking-right">
+  {% if bnews|length > 1 %}
+    {% with item=bnews.1 %}
+    <div class="big-news-card">
+      <a href="{% url 'single-news' item.slug %}">
+        <div class="big-news-img">
+          {% if item.thumbnail %}
+            <img src="{{ item.thumbnail.url }}" alt="{{item.title}}">
+          {% else %}
+            <img src="{% static 'images/d.jpg' %}" alt="{{item.title}}">
+          {% endif %}
+        </div>
+        <div class="big-news-content">
+          <h3>{{ item.title }}</h3>
+          <span class="big-news-meta">{{ item.tag }} | {{ item.published_date|timesince }} ago</span>
+          <p class="breaking-summary">{{ item.description|truncatewords:10 }}</p>
+        </div>
+      </a>
+    </div>
+    {% endwith %}
+  {% endif %}
+
+  {% for item in bnews|slice:"2:4" %}
+  <div class="mini-news-card">
+    <a href="{% url 'single-news' item.slug %}">
+      <div class="mini-news-img">
+        {% if item.thumbnail %}
+          <img src="{{ item.thumbnail.url }}" alt="{{item.title}}">
+        {% else %}
+          <img src="{% static 'images/d.jpg' %}" alt="{{item.title}}">
+        {% endif %}
+      </div>
+      <div class="mini-news-content">
+        <h4>{{ item.title|truncatewords:10 }}</h4>
+        <span class="mini-news-meta">{{ item.tag }} | {{ item.published_date|timesince }} ago</span>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+
+
+    <div class="side-image">
+      <a href="{% url 'magazine_page'%}" target="_blank">
+      <img src="{% static 'images/BOOST.png' %}" alt="Side Image">
+      </a>
+    </div>
+  </div>
+</section>
+{% for tag, tag_news in tags_with_news %}
+    {% if tag_news %}
+    <section class="news-section">
+      <h2 class="tag-header">{{ tag.name }}</h2>
+
+      <div class="news-grid">
+        <!-- Left: Main Featured -->
+        <a href="{% url 'single-news' tag_news.0.slug %}" class="no-style-link">
+        <div class="left-featured">
+          <div class="text">
+            <h1 class="headline">{{ tag_news.0.title|truncatewords:10 }}</h1>
+            <p class="description">{{ tag_news.0.content|safe|truncatewords:35 }}</p>
+            <span class="meta">{{tag.name}} {{ tag_news.0.published_date|timesince }} ago</span>
+          </div>
+          <div class="image">
+            <img src="{{ tag_news.0.thumbnail.url }}" alt="{{ tag_news.0.title }}">
+          </div>
+        </div>
+        </a>
+
+        <!-- Right: Sidebar List -->
+        <div class="right-sidebar">
+          {% for item in tag_news|slice:"1:5" %}
+          <a href="{% url 'single-news' item.slug %}" class="no-style-link">
+          <div class="sidebar-item">
+            <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}">
+            <div class="sidebar-text">
+              <p class="title">{{ item.title|truncatewords:8 }}</p>
+              <span class="meta">{{tag.name}} {{ item.published_date|timesince }} ago</span>
+            </div>
+          </div>
+        </a>
+          {% endfor %}
+          
         </div>
       </div>
-    </section>
-    <h1 class="container" style="margin-top: 50px; margin-bottom: 20px; font-size: 40px; font-weight: bold; text-align: center; text-transform: uppercase; letter-spacing: 2px; font-family: Arial, sans-serif;">
-  Breaking News!
-</h1><section class="recent">
-      <div class="container"> <!-- Add this heading -->
-        <div class="recent__inner">
-          <ul class="recent__list">
-            {% for item in news %}
-            <li class="recent__item">
-              <article class="recent__article">
-                {% if item.thumbnail %}
-                  <img class="recent__article-cover" src="{{ item.thumbnail.url }}" alt="">
-                {% else %}
-                  <img class="recent__article-cover" src="{% static 'images/d.jpg' %}" alt="No Image">
-                {% endif %}
-                <div class="recent__article-info">
-                  <span class="recent__article-number">{{ forloop.counter }}</span>
-                  <h4 class="recent__article-title">
-                    <a href="{% url 'single-news' item.id %}">{{ item.title|truncatewords:6 }}</a>
-                  </h4>
-                  <a href="{% url 'single-news' item.id %}" class="read-more-link">Read more →</a>
-                </div>
-              </article>
-            </li>
-            {% endfor %}
-          </ul>
+
+      <!-- Bottom Thumbnails -->
+      <div class="bottom-thumbs">
+        {% for item in tag_news|slice:"5:13" %}
+        <a href="{% url 'single-news' item.slug %}" class="no-style-link">
+        <div class="thumb-item">
+          <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}">
+          <p>{{ item.title|truncatewords:6 }}</p>
+          <span class="meta">{{tag.name}} {{ item.published_date|timesince }} ago</span>
         </div>
+        </a>
+        {% endfor %}
       </div>
     </section>
+    {% endif %}
+  {% endfor %}
   </main>
+  <footer class="footer">
+  <div class="container">
+    <div class="footer-columns">
+
+      <!-- About Column -->
+      <div>
+        <h3>About Paraparapu Chethi</h3>
+        <p>Tamil Seithigal, Tamil news today in Tamil. Your destination for top Tamil trending news and updates.</p>
+      </div>
+
+      <!-- Quick Links Column -->
+      <div>
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'magazine_page' %}">Magazines</a></li>
+          <li><a href="{% url 'contact' %}">Contact</a></li>
+          <li><a href="{% url 'terms' %}">Terms & Conditions</a></li>
+          <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
+
+        </ul>
+      </div>
+
+      <!-- Contact Info Column -->
+      <div>
+        <h3>Contact Us</h3>
+        <p>Email: paraparapucheithi@gmail.com</p>
+        <p>Contact: 9840061095</p>
+        <p>Follow us on: 
+          <a href="#">Facebook</a> | 
+          <a href="#">Instagram</a>
+        </p>
+      </div>
+
+    </div>
+    <p class="footer-copy">© 2025 Paraparapu Chethi. All rights reserved.</p>
+  </div>
+</footer>
+
 </body>
 
 </html>
