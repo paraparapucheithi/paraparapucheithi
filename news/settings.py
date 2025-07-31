@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-b0(c9ztz_w=5s@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['tamil.paraparappucheithi.com','paraparappucheithi.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
