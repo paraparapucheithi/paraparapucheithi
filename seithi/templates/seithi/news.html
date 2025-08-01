@@ -115,7 +115,7 @@
     <!-- LEFT COLUMN (Main Breaking News) -->
 <div class="breaking-left">
   {% with item=bnews.0 %}
-    <a href="{% url 'single-news' item.slug %}">
+    <a href="{% url 'single-news' item.slug %}" class="no-style-link">
       <span class="breaking-tag">முக்கிய செய்திகள்</span>
     </a>
 
@@ -163,7 +163,7 @@
   {% if bnews|length > 1 %}
     {% with item=bnews.1 %}
     <div class="big-news-card">
-      <a href="{% url 'single-news' item.slug %}">
+      <a href="{% url 'single-news' item.slug %}" class="no-style-link">
         <div class="big-news-img">
           {% if item.thumbnail %}
             <img src="{{ item.thumbnail.url }}" alt="{{item.title}}">
@@ -172,9 +172,8 @@
           {% endif %}
         </div>
         <div class="big-news-content">
-          <h3>{{ item.title }}</h3>
+          <h3>{{ item.title|truncatewords:10  }}</h3>
           <span class="big-news-meta">{{ item.tag }} | {{ item.published_date|timesince }} ago</span>
-          <p class="breaking-summary">{{ item.description|truncatewords:10 }}</p>
         </div>
       </a>
     </div>
@@ -183,7 +182,7 @@
 
   {% for item in bnews|slice:"2:4" %}
   <div class="mini-news-card">
-    <a href="{% url 'single-news' item.slug %}">
+    <a href="{% url 'single-news' item.slug %}" class="no-style-link">
       <div class="mini-news-img">
         {% if item.thumbnail %}
           <img src="{{ item.thumbnail.url }}" alt="{{item.title}}">

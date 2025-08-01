@@ -393,6 +393,85 @@ body {
   font-size: 11px;
   color: #c00;
 }
+@media screen and (max-width: 768px) {
+  .news-section {
+    padding: 20px 15px;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+  }
+
+  .news-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .left-featured {
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .left-featured .image img {
+    height: auto;
+    max-height: 250px;
+  }
+
+  .left-featured .headline {
+    font-size: 20px;
+    -webkit-line-clamp: 3;
+  }
+
+  .left-featured .description {
+    font-size: 14px;
+    -webkit-line-clamp: 4;
+  }
+
+  .right-sidebar {
+    margin-top: -150px;
+  }
+
+  .sidebar-item {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .sidebar-item img {
+    width: 80px;
+    height: 60px;
+  }
+
+  .sidebar-text .title {
+    font-size: 13px;
+    -webkit-line-clamp: 2;
+  }
+
+  .sidebar-text .meta {
+    font-size: 10px;
+  }
+
+  .bottom-thumbs {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .thumb-item img {
+    height: 90px;
+  }
+
+  .thumb-item p {
+    font-size: 12px;
+    -webkit-line-clamp: 2;
+  }
+
+  .thumb-item .meta {
+    font-size: 10px;
+  }
+
+  .tag-header {
+    font-size: 18px;
+    padding-left: 8px;
+  }
+}
+
 
 
 /* Top Bar */
@@ -1097,6 +1176,76 @@ body {
   .singlenews__rich-content{
     padding-top: 30px;
   }
+  .singlenews__rich-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 15px auto;
+  border-radius: 6px;
+  object-fit: contain;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  /* Prevent horizontal scrolling in rich content */
+  .singlenews__rich-content {
+    overflow-x: hidden;
+    word-wrap: break-word;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* Make embedded iframes (like YouTube) responsive */
+  .singlenews__rich-content iframe {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    display: block;
+    margin: 20px 0;
+  }
+
+  /* Optional: limit heading sizes from rich text */
+  .singlenews__rich-content h1,
+  .singlenews__rich-content h2 {
+    font-size: 1.5rem;
+  }
+
+
+  @media screen and (max-width: 768px) {
+    .singlenews__rich-content img {
+      max-width: 100% !important;
+      height: auto !important;
+      display: block;
+      margin: 15px auto;
+      border-radius: 6px;
+      object-fit: contain;
+    }
+
+    .singlenews__rich-content {
+      padding: 0 10px;
+      overflow-x: hidden;
+      word-wrap: break-word;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .singlenews__rich-content iframe,
+    .singlenews__rich-content video {
+      max-width: 100% !important;
+      height: auto !important;
+      display: block;
+      margin: 20px 0;
+    }
+
+    /* Optional: make large tables scrollable */
+    .singlenews__rich-content table {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
   .singlenews__category {
     display: inline-block;
     background: #000000;
