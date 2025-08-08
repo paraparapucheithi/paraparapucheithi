@@ -56,7 +56,7 @@
   <nav class="nav-links" id="navMenu">
     <ul>
       <li><a href="#">நியூஸ்</a></li>
-      <li><a href="{% url 'new-news' %}">சமீபத்திய!</a></li>
+      <li><a href="{% url 'new-news' %}">சமீபத்திய செய்தி</a></li>
       {% for tag in tags %}
         <li><a href="{% url 'news-by-tag' tag.name %}">{{ tag.name }}</a></li>
       {% endfor %}
