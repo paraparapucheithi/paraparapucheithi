@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ta">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ✅ SEO Meta Descriptions -->
+   <meta name="description" content="Paraparapu Chethi brings you the latest {{ tag_name }} Tamil News Today in Tamil. {{ tag_name }} முக்கிய செய்திகள் தமிழிலும், English-லுமாக. Tamil Seithigal, Breaking Tamil News, and live updates – all in one place.">
+
+
+
+  <!-- Other head elements -->
+  <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+  <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+  <title>Paraparapu Chethi | {{ tag_name }} News</title>
+  <script defer src="{% static 'js/app.js' %}"></script>
+  <script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=6962185e8c1c0' async='true'></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R8VF2L6J0S"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-R8VF2L6J0S');
+  </script>
+
+  <meta property="og:title" content="Paraparapu Chethi | {{ tag_name }} News" />
+  <meta property="og:description" content="{{ tag_name }} Tamil news today in Tamil from Paraparapu Chethi. {{ tag_name }} செய்திகள் தமிழிலும், English-லுமாக உடனுக்குடன்.">
+
+  <meta property="og:image" content="{% static 'images/new_logo.png' %}" />
+  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="og:type" content="website" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NewsMediaOrganization",
+    "name": "Paraparapu Chethi",
+    "url": "https://paraparapucheithi.com",
+    "logo": "https://paraparapucheithi.com/static/images/new_logo.png"
+  }
+  </script>
+
+</head>
+
+<body>
+  <!-- Header Section -->
+<header class="responsive-header">
+    <div class="mobile-header">
+      <button class="hamburger" onclick="toggleMenu()">☰</button>
+      <a href="{% url 'home' %}">
+        <img src="{% static 'images/new_logo.png' %}" class="main-logo" alt="Paraparapu Chethi Logo">
+      </a>
+    </div>
+
+  <nav class="nav-links" id="navMenu">
+    <ul>
+      <li><a href="#">நியூஸ்</a></li>
+      <li><a href="{% url 'new-news' %}">புதிய செய்தி</a></li>
+      {% for tag in tags %}
+        <li><a href="{% url 'news-by-tag' tag.name %}">{{ tag.name }}</a></li>
+      {% endfor %}
+      <li><a href="{% url 'magazine_page' %}">பரபரப்பு செய்தி இதழ்</a></li>
+    </ul>
+  </nav>
+</header>
+  
+
+
+  <!-- Main Content -->
+  <main class="container" style="padding: 40px 20px;">
+    <h1 style="font-size: 3.5rem; margin-bottom: 30px; font-weight: bold; text-align: center;">
+      {{ tag_name }} | Tamil News - தமிழில் முக்கிய செய்திகள்
+    </h1>
+
+  <section class="news-gridt">
+
+      {% for item in news %}
+        <article class="news-card" style="background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+          <a href="{% url 'single-news' item.slug %}" style="color: #222; text-decoration: none;">
+          {% if item.thumbnail %}
+            <img loading="lazy" src="{{ item.thumbnail.url }}" alt="{{ item.title }}" style="width: 100%; height: 200px; object-fit: cover;">
+          {% else %}
+            <img loading="lazy" src="{% static 'images/d.jpg' %}" alt="{{item.title}}" style="width: 100%; height: 200px; object-fit: cover;">
+          {% endif %}
+          <div style="padding: 20px;">
+            <h2 style="font-size: 1.25rem; margin-bottom: 10px;">
+              <a href="{% url 'single-news' item.slug %}" style="color: #222; text-decoration: none;">
+                {{ item.title|truncatewords:12 }}
+              </a>
+            </h2>
+            <p style="font-size: 0.95rem; color: #555;">
+              {{ item.description|truncatewords:20 }}
+            </p>
+            <p style="font-size: 0.85rem; margin-top: 10px; color: #888;">
+              {{ item.published_date|date:"F j, Y" }}
+            </p>
+          </div>
+        </a>
+        </article>
+      {% empty %}
+        <p style="font-size: 1.2rem; text-align: center; color: #555;">No news found under this tag.</p>
+      {% endfor %}
+    </section>
+
+    <section class="home-keywords container" style="padding: 40px 0; background: #f9f9f9; border-bottom: 1px solid #e2e2e2;">
+      <div style="max-width: 900px; margin: 0 auto; padding: 0 20px;">
+        <h2 style="font-size: 1.8rem; font-weight: 700; color: #222; margin-bottom: 16px; text-align:center;">
+          Tamil News Today in Tamil | Tamil Seithigal | Tamil News Channel
+        </h2>
+        <p style="text-align:center; font-size: 15px; color: #555;">
+          Get the latest Tamil Seithigal from Paraparapu Chethi. Stay informed with trending news stories, breaking updates, and top headlines in Tamil — delivered fresh every day.
+        </p>
+      </div>
+    </section>
+  </main>
+</body>
+
+</html>

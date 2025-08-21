@@ -1,0 +1,422 @@
+{%load static%}
+
+
+
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+   <script defer src="{% static 'js/app.js' %}"></script>
+  <script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=6962185e8c1c0' async='true'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+  <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Paraparapu Chethi</title>
+    <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R8VF2L6J0S"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-R8VF2L6J0S');
+  </script>
+</head>
+
+<body>
+
+<header class="responsive-header">
+    <div class="mobile-header">
+      <button class="hamburger" onclick="toggleMenu()">☰</button>
+      <a href="{% url 'home' %}">
+        <img src="{% static 'images/new_logo.png' %}" class="main-logo" alt="Paraparapu Chethi Logo">
+      </a>
+    </div>
+
+  <nav class="nav-links" id="navMenu">
+    <ul>
+      <li><a href="{%url 'home'%}">நியூஸ்</a></li>
+      <li><a href="{% url 'new-news' %}">புதிய செய்தி</a></li>
+      {% for tag in tagsa %}
+        <li><a href="{% url 'news-by-tag' tag.name %}">{{ tag.name }}</a></li>
+      {% endfor %}
+      <li><a href="{% url 'magazine_page' %}">பரபரப்பு செய்தி இதழ்</a></li>
+    </ul>
+  </nav>
+</header>
+
+  <main>
+
+    <!-- HTML Structure -->
+<section class="singlenews">
+  <div class="container">
+    <div class="singlenews__inner">
+      <article class="singlenews__main">
+        {% if magazine.thumbnail %}
+          <img src="{{ magazine.thumbnail.url }}" alt="{{ magazine.title }}" class="singlenews__main-cover singlenews__main-cover--desktopmag">
+        {% else %}
+          <div class="singlenews__no-image">No image uploaded</div>
+        {% endif %}
+        
+        <div class="singlenews__content">
+          <div class="singlenews__header">
+            <span class="singlenews__category">{{ new.category }}</span>
+            <h1 class="singlenews__title">{{ magazine.title }}</h1>
+            <div class="singlenews__meta">
+              <span class="singlenews__date">On {{ magazine.published_date|date:"F j, Y" }}</span>
+            </div>
+          </div>
+          
+          <div class="singlenews__body">
+            {{ magazine.description|safe|linebreaks }}
+          </div>
+          <!-- Share Label -->
+          <div style="margin-top: 30px; margin-bottom: 10px; font-weight: 600; font-size: 18px;">
+            Share:
+          </div>
+
+          <!-- Share Icons -->
+          <div style="display: flex; gap: 16px; align-items: center;">
+
+            <!-- WhatsApp -->
+            <a href="https://wa.me/?text={{ request.build_absolute_uri }}" target="_blank" title="Share on WhatsApp"
+              style="color: #25D366; font-size: 24px;">
+              <i class="fab fa-whatsapp"></i>
+            </a>
+
+            <!-- Facebook -->
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" title="Share on Facebook"
+              style="color: #4267B2; font-size: 24px;">
+              <i class="fab fa-facebook"></i>
+            </a>
+
+            <!-- Copy to Clipboard -->
+            <a href="javascript:void(0);" onclick="copyToClipboard()" title="Copy Link"
+              style="color: #333; font-size: 24px;">
+              <i class="fas fa-link"></i>
+            </a>
+
+          </div>
+
+          <!-- Copy to Clipboard Script -->
+          <script>
+            function copyToClipboard() {
+              const text = "{{ request.build_absolute_uri }}";
+              navigator.clipboard.writeText(text).then(function () {
+                alert("🔗 Link copied to clipboard!");
+              }, function (err) {
+                alert("❌ Failed to copy link.");
+              });
+            }
+          </script>
+
+
+        </div>
+    </div>
+<div class="singlenews__rich-content" style="position: relative;">
+
+  <!-- PDF Viewer Container -->
+  <div id="pdf-viewer-container" style="width: 100%; margin: 20px 0; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; {% if not show_pdf %}display: none;{% endif %}">
+    <!-- Your existing PDF viewer code remains exactly the same -->
+    <!-- Top Toolbar -->
+    <div id="pdf-toolbar" style="background: #f5f5f5; padding: 10px; display: flex; gap: 10px; align-items: center;">
+      <button id="prev-page" class="pdf-button" disabled>
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <span id="page-num">Page: <span id="current-page">1</span> / <span id="total-pages">0</span></span>
+      <button id="next-page" class="pdf-button">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+      <div style="margin-left: auto; display: flex; gap: 10px;">
+        <button id="zoom-out" class="pdf-button">
+          <i class="fas fa-search-minus"></i>
+        </button>
+        <span id="zoom-level">100%</span>
+        <button id="zoom-in" class="pdf-button">
+          <i class="fas fa-search-plus"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Viewer Canvas -->
+    <div id="pdf-viewer" style="width: 100%; overflow: auto; background: #525659; text-align: center;">
+      <canvas id="pdf-canvas" style="margin: 20px 0; box-shadow: 0 0 10px rgba(0,0,0,0.5);"></canvas>
+    </div>
+
+    <!-- Bottom Toolbar -->
+    <div id="pdf-toolbar-bottom" style="background: #f5f5f5; padding: 10px; display: flex; gap: 10px; align-items: center;">
+      <button id="prev-page-bottom" class="pdf-button" disabled>
+        <i class="fas fa-chevron-left"></i> Previous|முந்தைய
+      </button>
+      <span id="page-num-bottom">Page: <span id="current-page-bottom">1</span> / <span id="total-pages-bottom">0</span></span>
+      <button id="next-page-bottom" class="pdf-button">
+        Next|அடுத்து<i class="fas fa-chevron-right"></i>
+      </button>
+      <div style="margin-left: auto; display: flex; gap: 10px;">
+        <button id="zoom-out-bottom" class="pdf-button">
+          <i class="fas fa-search-minus"></i>
+        </button>
+        <span id="zoom-level-bottom">100%</span>
+        <button id="zoom-in-bottom" class="pdf-button">
+          <i class="fas fa-search-plus"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PDF.js Implementation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+<script>
+  // Set worker path
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+  
+  // PDF variables
+  let pdfDoc = null,
+      pageNum = 1,
+      pageRendering = false,
+      pageNumPending = null,
+      scale = 1.0,
+      canvas = document.getElementById('pdf-canvas'),
+      ctx = canvas.getContext('2d');
+  
+  // Load the PDF
+  pdfjsLib.getDocument("{{ magazine.pdf_file.url }}").promise.then(function(pdf) {
+    pdfDoc = pdf;
+    document.getElementById('total-pages').textContent = pdf.numPages;
+    document.getElementById('total-pages-bottom').textContent = pdf.numPages;
+    
+    // Initial page render
+    renderPage(pageNum);
+  });
+
+  // Page rendering function
+  function renderPage(num) {
+    pageRendering = true;
+    pdfDoc.getPage(num).then(function(page) {
+      const viewport = page.getViewport({ scale: scale });
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+      
+      const renderContext = {
+        canvasContext: ctx,
+        viewport: viewport
+      };
+      
+      const renderTask = page.render(renderContext);
+      
+      renderTask.promise.then(function() {
+        pageRendering = false;
+        document.getElementById('current-page').textContent = num;
+        document.getElementById('current-page-bottom').textContent = num;
+        
+        // Enable/disable buttons
+        document.getElementById('prev-page').disabled = num <= 1;
+        document.getElementById('next-page').disabled = num >= pdfDoc.numPages;
+        document.getElementById('prev-page-bottom').disabled = num <= 1;
+        document.getElementById('next-page-bottom').disabled = num >= pdfDoc.numPages;
+        
+        // Show popup when reaching page 3 and not subscribed
+        if (num >= 3 && !{{ show_pdf|yesno:"true,false" }}) {
+          document.getElementById('popupOverlay').style.display = 'flex';
+          // Disable next page button until email is entered
+          document.getElementById('next-page').disabled = true;
+          document.getElementById('next-page-bottom').disabled = true;
+        }
+        
+        if (pageNumPending !== null) {
+          renderPage(pageNumPending);
+          pageNumPending = null;
+        }
+      });
+    });
+  }
+  
+  // Queue page rendering
+  function queueRenderPage(num) {
+    if (pageRendering) {
+      pageNumPending = num;
+    } else {
+      renderPage(num);
+    }
+  }
+  
+  // Button event handlers for top toolbar
+  document.getElementById('prev-page').addEventListener('click', function() {
+    if (pageNum <= 1) return;
+    pageNum--;
+    queueRenderPage(pageNum);
+  });
+  
+  document.getElementById('next-page').addEventListener('click', function() {
+    if (pageNum >= pdfDoc.numPages) return;
+    pageNum++;
+    queueRenderPage(pageNum);
+  });
+  
+  // Button event handlers for bottom toolbar
+  document.getElementById('prev-page-bottom').addEventListener('click', function() {
+    if (pageNum <= 1) return;
+    pageNum--;
+    queueRenderPage(pageNum);
+  });
+  
+  document.getElementById('next-page-bottom').addEventListener('click', function() {
+    if (pageNum >= pdfDoc.numPages) return;
+    pageNum++;
+    queueRenderPage(pageNum);
+  });
+  
+  // Zoom controls for top toolbar
+  document.getElementById('zoom-in').addEventListener('click', function() {
+    if (scale >= 3.0) return;
+    scale += 0.25;
+    document.getElementById('zoom-level').textContent = Math.round(scale * 100) + '%';
+    document.getElementById('zoom-level-bottom').textContent = Math.round(scale * 100) + '%';
+    queueRenderPage(pageNum);
+  });
+  
+  document.getElementById('zoom-out').addEventListener('click', function() {
+    if (scale <= 0.5) return;
+    scale -= 0.25;
+    document.getElementById('zoom-level').textContent = Math.round(scale * 100) + '%';
+    document.getElementById('zoom-level-bottom').textContent = Math.round(scale * 100) + '%';
+    queueRenderPage(pageNum);
+  });
+  
+  // Zoom controls for bottom toolbar
+  document.getElementById('zoom-in-bottom').addEventListener('click', function() {
+    if (scale >= 3.0) return;
+    scale += 0.25;
+    document.getElementById('zoom-level').textContent = Math.round(scale * 100) + '%';
+    document.getElementById('zoom-level-bottom').textContent = Math.round(scale * 100) + '%';
+    queueRenderPage(pageNum);
+  });
+  
+  document.getElementById('zoom-out-bottom').addEventListener('click', function() {
+    if (scale <= 0.5) return;
+    scale -= 0.25;
+    document.getElementById('zoom-level').textContent = Math.round(scale * 100) + '%';
+    document.getElementById('zoom-level-bottom').textContent = Math.round(scale * 100) + '%';
+    queueRenderPage(pageNum);
+  });
+
+  // Popup functions
+  function closePopup() {
+    document.getElementById('popupOverlay').style.display = 'none';
+  }
+
+  // Form submission
+  document.getElementById('email-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const emailInput = document.getElementById('emailInput');
+    const emailError = document.getElementById('emailError');
+    
+    // Reset error state
+    emailError.style.display = 'none';
+    emailInput.style.borderColor = '#ddd';
+    
+    // Validate Gmail
+    const email = emailInput.value.trim();
+    if (!email.endsWith('@gmail.com')) {
+      emailError.style.display = 'block';
+      emailInput.style.borderColor = 'red';
+      return;
+    }
+    
+    // Submit the form normally (will reload the page)
+    this.submit();
+  });
+</script>
+
+  </div>
+</section>
+
+
+
+
+
+<!-- Comments Section -->
+<section class="comments-section">
+  <div class="container">
+    <h2 class="comments-title">Comments</h2>
+
+
+
+    <div class="comment-form">
+      <h3 class="form-title">Leave a Comment</h3>
+      <form method="POST" action="">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="Your Name" required>
+        <textarea name="body" rows="4" placeholder="Your Comment" required></textarea>
+        <button type="submit">Post Comment</button>
+      </form>
+    </div>
+
+    <!-- Existing Comments -->
+    <!-- Display Comments -->
+    <div class="comments-list">
+      {% for review in comments %}
+        <div class="comment">
+          <div class="comment-header">
+            <span class="comment-name">{{ review.name }}</span>
+            <span class="comment-date">{{ review.created|date:"F j, Y" }}</span>
+          </div>
+          <p class="comment-body">{{ review.body }}</p>
+        </div>
+      {% empty %}
+        <p>No comments yet. Be the first to comment!</p>
+      {% endfor %}
+    </div>
+
+
+    <!-- Comment Form -->
+
+  </div>
+
+
+
+
+    <script>
+    function openPopup() {
+      document.getElementById('popupOverlay').style.display = 'flex';
+    }
+
+    function closePopup() {
+      document.getElementById('popupOverlay').style.display = 'none';
+    }
+
+    function validateEmail() {
+      const emailInput = document.getElementById('emailInput').value.trim();
+      const errorMsg = document.getElementById('emailError');
+      const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
+      if (!gmailRegex.test(emailInput)) {
+        errorMsg.style.display = 'block';
+        return false; // prevent form submission
+      }
+
+      errorMsg.style.display = 'none';
+      return true; // allow submission
+    }
+  </script>
+</section>
+
+
+
+
+
+
+  </main>
+</body>
+
+</html>
+
+
+           
